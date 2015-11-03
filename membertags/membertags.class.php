@@ -16,12 +16,11 @@ class PerchFieldType_membertags extends PerchAPI_FieldType
     {
         $id  = $this->Tag->input_id();
         $val = '';
-        
         if (isset($details[$id]) && $details[$id]!='') {
             $json = $details[$id];
-            $val  = $json['memberTags']; 
+            $val  = $json['tag']; 
         }
-        
+
 		$DB = PerchDB::fetch();
 
         $sql = 'SELECT * FROM '.PERCH_DB_PREFIX.'members_tags ORDER BY tagDisplay';
@@ -37,12 +36,7 @@ class PerchFieldType_membertags extends PerchAPI_FieldType
         }
        
         if(PerchUtil::count($opts)) {
-        	$s = $this->Form->select($id, $opts, $val);
-
-        	/* TODO: Allow multiple tags to be selected
-        	$s = $this->Form->checkbox_set($id, 'Tags', $opts);
-        	*/
-        	
+        	$s = $this->Form->select($id, $opts, $val);      	
         } else {
         	$s = '-';
         }
@@ -59,22 +53,13 @@ class PerchFieldType_membertags extends PerchAPI_FieldType
 	*/
     public function get_raw($post=false, $Item=false) 
     {
-        $store  = '';
+        $store  = array();
 
-		/* TODO: Allow multiple tags to be selected
-        $store = array();
-        */
+        $id = $this->Tag->id();
 
-        $id     = $this->Tag->id();
-        if ($post===false) $post = $_POST; 
-        if (isset($_POST[$id])) {
-    		$store = $_POST[$id];
-
-			/* TODO: Allow multiple tags to be selected
-    		foreach($_POST[$id] as $item) {
-        		$store[] = $item;
-    		}
-    		*/
+        if ($post === false) $post = $_POST; 
+        if (isset($post[$id])) {
+    		$store['tag'] = $post[$id];
         }
         return $store;
     }
@@ -87,8 +72,8 @@ class PerchFieldType_membertags extends PerchAPI_FieldType
 	*/
     public function get_processed($raw=false)
     {    
-        if (is_array($raw) && isset($raw['memberTags'])) { 
-            return $raw['memberTags'];
+        if (is_array($raw) && isset($raw['tag'])) { 
+            return $raw['tag'];
         }
 
         return $raw;
