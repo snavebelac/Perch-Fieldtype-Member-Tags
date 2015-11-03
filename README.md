@@ -1,2 +1,2 @@
-# Perch-Fieldtype-Member-Tags
-A simple field type for Perch CMS that allows you to select an existing member tag
+# Perch Fieldtype Member Tags
+A simple fieldtype for Perch CMS to display a list of menber tags in a simple select list
